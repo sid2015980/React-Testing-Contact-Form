@@ -3,22 +3,24 @@ import { useForm } from "react-hook-form";
 
 const ContactForm = () => {
   const [data, setData] = useState();
-  const { register, errors, handleSubmit } = useForm({
+  const { register, errors, handleSubmit, reset } = useForm({
     mode: "onBlur",
   });
-  const onSubmit = (data) => {
+  const onSubmit = (data, e ) => {
     setData(data);
+    e.target.reset()
   };
 
   return (
     <div className="App">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="firstName">First Name*</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             name="firstName"
+            id='firstName'
             placeholder="Edd"
-            ref={register({ required: true, maxLength: 3 })}
+            ref={register({ required: true, maxLength: 10 })}
           />
           {errors.firstName && (
             <p>Looks like there was an error: {errors.firstName.type}</p>
@@ -26,8 +28,9 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="lastName">Last Name*</label>
+          <label htmlFor="lastName">Last Name</label>
           <input
+          id='lastName'
             name="lastName"
             placeholder="Burke"
             ref={register({ required: true })}
@@ -39,23 +42,26 @@ const ContactForm = () => {
 
         <div>
           <label htmlFor="email" placeholder="bluebill1049@hotmail.com">
-            Email*
+            Email
           </label>
-          <input name="email" ref={register({ required: true })} />
+          <input name="email" id="email" ref={register({ required: true })} />
           {errors.email && (
             <p>Looks like there was an error: {errors.email.type}</p>
           )}
         </div>
         <div>
           <label htmlFor="message">Message</label>
-          <textarea name="message" ref={register({ required: false })} />
+          <textarea name="message" id="message" ref={register({ required: false })} />
         </div>
         {data && (
-          <pre style={{ textAlign: "left", color: "white" }}>
+          <pre style={{ textAlign: "left", color: "white" }} data-testid="value">
             {JSON.stringify(data, null, 2)}
+            
           </pre>
         )}
-        <input type="submit" />
+        <label data-testid="submit" htmlFor="button">
+        <input type="submit" id="button" />
+        </label>
       </form>
     </div>
   );
